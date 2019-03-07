@@ -1,4 +1,5 @@
 const express = require('express')
+const jwt = require('jwt')
 const router = express.Router()
 const User = require('../models/user')
 
@@ -25,7 +26,9 @@ router.post('/register', (req,res) => {
       console.error('Error' + err)
     } else {
       console.log(registeredUser)
-      res.status(200).send(registeredUser)
+      let payload = { subject: registeredUser._id}
+      let token = jwt.sign(payload, 'secretKey')
+      res.status(200).send({token})
     }
   })
 })
